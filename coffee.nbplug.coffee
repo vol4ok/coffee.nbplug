@@ -39,7 +39,7 @@ class CoffeePlugin
     fileExts: [ "coffee" ]
   
   constructor: (@builder) ->
-    #@builder.registerType('coffee2', @coffee, this)
+    @builder.registerType('coffee', @coffee, this)
     
   coffee: (name, options) ->
     @opt = _.defaults(options, @defaults)

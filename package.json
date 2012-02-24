@@ -2,7 +2,7 @@
   "author": "vol4ok <admin@vol4ok.net>",
   "name": "coffee.nbplug",
   "description": "coffee-script compile nBuild plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "url": "git://github.com/vol4ok/coffee.nbplug.git"
   },

@@ -55,6 +55,7 @@ CoffeePlugin = (function() {
 
   function CoffeePlugin(builder) {
     this.builder = builder;
+    this.builder.registerType('coffee', this.coffee, this);
   }
 
   CoffeePlugin.prototype.coffee = function(name, options) {
