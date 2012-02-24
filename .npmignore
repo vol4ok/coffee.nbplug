@@ -1,3 +1,8 @@
+*.coffee
+.DS_Store
+.git*
 src
+test
 package.cson
 build.nbproj
+_state.json

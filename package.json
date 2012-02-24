@@ -9,6 +9,7 @@
   "engines": {
     "node": "~0.6.11"
   },
+  "main": "coffee.nbplug",
   "dependencies": {
     "underscore": ">=1.2.0",
     "fs.walker": "git://github.com/vol4ok/fs.walker.git",
