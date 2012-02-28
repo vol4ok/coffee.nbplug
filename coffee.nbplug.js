@@ -5,7 +5,7 @@
 */
 /** Module dependencies
 */
-var CoffeePlugin, Filter, basename, coffee, dirname, existsSync, extname, fs, join, makeDir, normalize, relative, setExt, walkSync, _, _ref,
+var CoffeePlugin, Filter, basename, coffee, dirname, existsSync, extname, fs, join, makeDir, normalize, relative, setExt, walkSync, _, _ref, _ref2,
   __slice = Array.prototype.slice;
 
 require("colors");
@@ -20,23 +20,9 @@ walkSync = require('fs.walker').walkSync;
 
 Filter = require('path.filter');
 
-makeDir = function(path, options) {
-  var mode, parent;
-  if (options == null) options = {};
-  mode = options.mode || 0755;
-  parent = dirname(path);
-  if (!existsSync(parent)) makeDir(parent, options);
-  if (!existsSync(path)) {
-    fs.mkdirSync(path, mode);
-    if (_.isArray(options.createdDirs)) return options.createdDirs.push(path);
-  }
-};
+_ref = require('fs.utils'), makeDir = _ref.makeDir, setExt = _ref.setExt;
 
-setExt = function(file, ext) {
-  return file.replace(/(\.[^.\/]*)?$/i, ext);
-};
-
-_ref = require('path'), join = _ref.join, dirname = _ref.dirname, basename = _ref.basename, extname = _ref.extname, normalize = _ref.normalize, relative = _ref.relative, existsSync = _ref.existsSync;
+_ref2 = require('path'), join = _ref2.join, dirname = _ref2.dirname, basename = _ref2.basename, extname = _ref2.extname, normalize = _ref2.normalize, relative = _ref2.relative, existsSync = _ref2.existsSync;
 
 exports.initialize = function(builder) {
   return new CoffeePlugin(builder);
@@ -59,27 +45,27 @@ CoffeePlugin = (function() {
   }
 
   CoffeePlugin.prototype.coffee = function(name, options) {
-    var target, _i, _len, _ref2, _ref3, _results,
+    var target, _i, _len, _ref3, _ref4, _results,
       _this = this;
     this.opt = _.defaults(options, this.defaults);
     if (this.opt.target != null) this.opt.targets.push(this.opt.target);
     this.count = 0;
-    this.filter = (_ref2 = new Filter()).allow.apply(_ref2, ['ext'].concat(__slice.call(this.opt.fileExts)));
+    this.filter = (_ref3 = new Filter()).allow.apply(_ref3, ['ext'].concat(__slice.call(this.opt.fileExts)));
     if (this.opt.filter != null) {
       if (_.isArray(this.opt.filter.allow)) {
         filter.allowList(this.opt.filter.allow);
       }
       if (_.isArray(this.opt.filter.deby)) filter.denyList(this.opt.filter.deny);
     }
-    _ref3 = this.opt.targets;
+    _ref4 = this.opt.targets;
     _results = [];
-    for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-      target = _ref3[_i];
+    for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
+      target = _ref4[_i];
       _results.push(walkSync().on('file', function(file, dir, base) {
-        var infile, outdir, outfile, _ref4;
+        var infile, outdir, outfile, _ref5;
         if (!_this.filter.test(file)) return;
         infile = join(base, dir, file);
-        outdir = join((_ref4 = _this.opt.outdir) != null ? _ref4 : base, dir);
+        outdir = join((_ref5 = _this.opt.outdir) != null ? _ref5 : base, dir);
         outfile = join(outdir, setExt(file, '.js'));
         makeDir(outdir);
         return _this._compile(infile, outfile);

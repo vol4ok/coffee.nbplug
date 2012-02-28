@@ -13,17 +13,7 @@ coffee = require 'coffee-script'
 
 {walkSync} = require 'fs.walker'
 Filter = require 'path.filter'
-#{makeDir, setExt} = require 'fs.utils'
-
-makeDir = (path, options = {}) -> 
-  mode = options.mode or 0755
-  parent = dirname(path)
-  makeDir(parent, options) unless existsSync(parent)
-  unless existsSync(path)
-    fs.mkdirSync(path, mode)
-    options.createdDirs.push(path) if _.isArray(options.createdDirs)
-    
-setExt = (file, ext) -> file.replace(/(\.[^.\/]*)?$/i, ext)
+{makeDir, setExt} = require 'fs.utils'
 
 {join, dirname, basename, extname, normalize, relative, existsSync} = require 'path'
 
