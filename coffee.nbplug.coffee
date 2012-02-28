@@ -21,10 +21,10 @@ exports.initialize = (builder) -> new CoffeePlugin(builder)
 
 class CoffeePlugin
   defaults:
-    targets: []
-    coffeeOptions: {}
+    src: []
+    dst: null
+    coffeeOptions: { bare: yes }
     recursive: yes
-    outdir: null
     filter: null
     fileExts: [ "coffee" ]
   
@@ -33,18 +33,18 @@ class CoffeePlugin
     
   coffee: (name, options) ->
     @opt = _.defaults(options, @defaults)
-    @opt.targets.push(@opt.target) if @opt.target?
+    @opt.src = [ @opt.src ] unless _.isArray(@opt.src)
     @count = 0
     @filter = new Filter().allow('ext', @opt.fileExts...)
     if @opt.filter?
       filter.allowList(@opt.filter.allow) if _.isArray(@opt.filter.allow)
       filter.denyList(@opt.filter.deny)   if _.isArray(@opt.filter.deby)
-    for target in @opt.targets 
+    for target in @opt.src 
       walkSync()
         .on 'file', (file, dir, base) => 
           return unless @filter.test(file)
           infile  = join(base, dir, file)
-          outdir = join(@opt.outdir ? base, dir)
+          outdir = join(@opt.dst ? base, dir)
           outfile = join(outdir, setExt(file, '.js'))
           makeDir(outdir)
           @_compile(infile, outfile)

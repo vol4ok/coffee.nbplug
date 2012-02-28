@@ -31,10 +31,12 @@ exports.initialize = function(builder) {
 CoffeePlugin = (function() {
 
   CoffeePlugin.prototype.defaults = {
-    targets: [],
-    coffeeOptions: {},
+    src: [],
+    dst: null,
+    coffeeOptions: {
+      bare: true
+    },
     recursive: true,
-    outdir: null,
     filter: null,
     fileExts: ["coffee"]
   };
@@ -48,7 +50,7 @@ CoffeePlugin = (function() {
     var target, _i, _len, _ref3, _ref4, _results,
       _this = this;
     this.opt = _.defaults(options, this.defaults);
-    if (this.opt.target != null) this.opt.targets.push(this.opt.target);
+    if (!_.isArray(this.opt.src)) this.opt.src = [this.opt.src];
     this.count = 0;
     this.filter = (_ref3 = new Filter()).allow.apply(_ref3, ['ext'].concat(__slice.call(this.opt.fileExts)));
     if (this.opt.filter != null) {
@@ -57,7 +59,7 @@ CoffeePlugin = (function() {
       }
       if (_.isArray(this.opt.filter.deby)) filter.denyList(this.opt.filter.deny);
     }
-    _ref4 = this.opt.targets;
+    _ref4 = this.opt.src;
     _results = [];
     for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
       target = _ref4[_i];
@@ -65,7 +67,7 @@ CoffeePlugin = (function() {
         var infile, outdir, outfile, _ref5;
         if (!_this.filter.test(file)) return;
         infile = join(base, dir, file);
-        outdir = join((_ref5 = _this.opt.outdir) != null ? _ref5 : base, dir);
+        outdir = join((_ref5 = _this.opt.dst) != null ? _ref5 : base, dir);
         outfile = join(outdir, setExt(file, '.js'));
         makeDir(outdir);
         return _this._compile(infile, outfile);
